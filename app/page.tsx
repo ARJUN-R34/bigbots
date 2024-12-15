@@ -24,13 +24,15 @@ export default function Home() {
 
   return (
     <div className="relative flex flex-col min-h-screen bg-background">
-      <div className="gradient-blob">
-        <div className="blob blob-blue"></div>
-        <div className="blob blob-purple"></div>
-        <div className="blob blob-green"></div>
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="gradient-blob">
+          <div className="blob blob-green"></div>
+          <div className="blob blob-blue"></div>
+          <div className="blob blob-purple"></div>
+        </div>
       </div>
 
-      <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-xl border-b">
+      <header className="sticky top-0 z-10 bg-background/40 backdrop-blur-xl border-b border-white/10">
         <div className="container mx-auto px-4 py-4">
           <h1 className="text-4xl font-bold text-center bigbots-text">
             BigBots
@@ -38,7 +40,7 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="flex-1 container mx-auto px-4 py-8">
+      <main className="flex-1 container mx-auto px-4 py-8 z-10">
         <div className="max-w-3xl mx-auto space-y-4">
           {messages.map((m, index) => (
             <div
@@ -59,7 +61,7 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="sticky bottom-0 z-10 bg-background/80 backdrop-blur-xl border-t">
+      <footer className="sticky bottom-0 z-10 bg-background/40 backdrop-blur-xl border-t border-white/10">
         <div className="container mx-auto px-4 py-4">
           <form onSubmit={handleSubmit} className="max-w-3xl mx-auto flex gap-2">
             <div className="relative flex-1">
