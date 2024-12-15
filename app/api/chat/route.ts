@@ -1,12 +1,12 @@
 import { openai } from '@ai-sdk/openai'
-import { streamText } from 'ai'
-import OpenAI from 'openai'
+// import { streamText } from 'ai'
+// import OpenAI from 'openai'
 
 export const runtime = 'edge'
 
-const openAIClient = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+// const openAIClient = new OpenAI({
+//   apiKey: process.env.OPENAI_API_KEY,
+// })
 
 export async function POST(req: Request) {
   const { messages, model } = await req.json()
@@ -31,19 +31,19 @@ export async function POST(req: Request) {
 }
 
 async function handleV0(messages: any[]) {
-  const result = streamText({
-    model: openai('gpt-4-turbo'),
-    messages,
-  })
-  return result.toDataStreamResponse()
+  // const result = streamText({
+  //   model: openai('gpt-4-turbo'),
+  //   messages,
+  // })
+  // return result.toDataStreamResponse()
 }
 
 async function handleChatGPT(messages: any[]) {
-  const stream = await openAIClient.chat.completions.create({
-    model: 'gpt-3.5-turbo',
-    messages,
-    stream: true,
-  })
+  // const stream = await openAIClient.chat.completions.create({
+  //   model: 'gpt-3.5-turbo',
+  //   messages,
+  //   stream: true,
+  // })
 
   const encoder = new TextEncoder()
   const decoder = new TextDecoder()
@@ -51,10 +51,10 @@ async function handleChatGPT(messages: any[]) {
   return new Response(
     new ReadableStream({
       async start(controller) {
-        for await (const chunk of stream) {
-          const content = chunk.choices[0]?.delta?.content || ''
-          controller.enqueue(encoder.encode(content))
-        }
+        // for await (const chunk of stream) {
+        //   const content = chunk.choices[0]?.delta?.content || ''
+        //   controller.enqueue(encoder.encode(content))
+        // }
         controller.close()
       },
     }),
