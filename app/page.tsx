@@ -23,76 +23,81 @@ export default function Home() {
   }, [messages])
 
   return (
-    <div className="flex flex-col h-screen bg-background text-foreground">
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="gradient-blob">
-          <div className="blob blob-green"></div>
-          <div className="blob blob-blue"></div>
-          <div className="blob blob-purple"></div>
-        </div>
+    <div className="relative flex flex-col min-h-screen bg-background">
+      <div className="gradient-blob">
+        <div className="blob blob-blue"></div>
+        <div className="blob blob-purple"></div>
+        <div className="blob blob-green"></div>
       </div>
 
-      <header className="bg-background/50 backdrop-blur-md p-4 shadow-md z-10">
-        <h1 className="text-5xl font-bold text-center bigbots-text">
-          BigBots
-        </h1>
+      <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-xl border-b">
+        <div className="container mx-auto px-4 py-4">
+          <h1 className="text-4xl font-bold text-center bigbots-text">
+            BigBots
+          </h1>
+        </div>
       </header>
 
-      <main className="flex-grow overflow-auto p-4 space-y-4">
-        <div className="space-y-4 max-w-3xl mx-auto">
+      <main className="flex-1 container mx-auto px-4 py-8">
+        <div className="max-w-3xl mx-auto space-y-4">
           {messages.map((m, index) => (
             <div
               key={index}
-              className={`p-3 rounded-lg frosted-glass ${
-                m.role === 'user'
-                  ? 'ml-auto bg-primary text-primary-foreground'
-                  : 'mr-auto bg-secondary text-secondary-foreground'
-              } max-w-md`}
+              className={`p-4 rounded-lg frosted-glass max-w-[85%] ${
+                m.role === 'user' ? 'ml-auto bg-primary/10' : 'mr-auto bg-secondary/10'
+              }`}
             >
-              <strong>{m.role === 'user' ? 'You: ' : 'AI: '}</strong>
-              {m.content}
+              <div className="text-sm font-medium mb-1">
+                {m.role === 'user' ? 'You' : 'AI'}
+              </div>
+              <div className="text-sm leading-relaxed whitespace-pre-wrap">
+                {m.content}
+              </div>
             </div>
           ))}
           <div ref={messagesEndRef} />
         </div>
       </main>
 
-      <footer className="bg-background/50 backdrop-blur-md p-4 z-10">
-        <form onSubmit={handleSubmit} className="flex items-center gap-2 max-w-3xl mx-auto">
-          <div className="flex-grow relative">
-            <Select onValueChange={setSelectedModel} defaultValue={selectedModel}>
-              <SelectTrigger className="w-[120px] absolute left-2 top-1/2 transform -translate-y-1/2 z-20 bg-muted/50 backdrop-blur-lg text-foreground border-none h-8">
-                <SelectValue placeholder="AI Model" />
-              </SelectTrigger>
-              <SelectContent className="bg-background text-foreground border-border">
-                {AI_MODELS.map((model) => (
-                  <SelectItem key={model.value} value={model.value} className="hover:bg-muted">
-                    {model.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <input
-              type="text"
-              value={input}
-              onChange={handleInputChange}
-              placeholder="Ask me anything..."
-              className="w-full h-10 px-3 bg-background/50 backdrop-blur-lg text-foreground placeholder-muted-foreground border-none focus:ring-2 focus:ring-ring rounded-md pl-[140px] transition-all duration-300 ease-in-out"
-            />
-          </div>
-          <Button 
-            type="submit" 
-            disabled={isLoading} 
-            className="bg-primary hover:bg-primary/90 text-primary-foreground p-2 rounded-full h-10 w-10 flex items-center justify-center"
-          >
-            {isLoading ? (
-              <Loader2 className="h-5 w-5 animate-spin" />
-            ) : (
-              <Send className="h-5 w-5" />
-            )}
-            <span className="sr-only">Send</span>
-          </Button>
-        </form>
+      <footer className="sticky bottom-0 z-10 bg-background/80 backdrop-blur-xl border-t">
+        <div className="container mx-auto px-4 py-4">
+          <form onSubmit={handleSubmit} className="max-w-3xl mx-auto flex gap-2">
+            <div className="relative flex-1">
+              <Select value={selectedModel} onValueChange={setSelectedModel}>
+                <SelectTrigger className="absolute left-2 top-1/2 -translate-y-1/2 w-[120px] h-8 text-xs bg-background/50">
+                  <SelectValue placeholder="Select Model" />
+                </SelectTrigger>
+                <SelectContent>
+                  {AI_MODELS.map((model) => (
+                    <SelectItem key={model.value} value={model.value}>
+                      {model.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <input
+                type="text"
+                value={input}
+                onChange={handleInputChange}
+                placeholder="Ask me anything..."
+                className="w-full h-12 pl-[140px] pr-4 rounded-lg bg-secondary/10 focus:ring-2 focus:ring-primary/20 border-0 placeholder:text-muted-foreground"
+              />
+            </div>
+            <Button
+              type="submit"
+              size="icon"
+              disabled={isLoading}
+              className="h-12 w-12 shrink-0 rounded-lg"
+            >
+              {isLoading ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <Send className="h-5 w-5" />
+              )}
+              <span className="sr-only">Send message</span>
+            </Button>
+          </form>
+        </div>
       </footer>
     </div>
   )
